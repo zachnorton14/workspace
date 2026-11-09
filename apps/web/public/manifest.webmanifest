@@ -1,0 +1,8 @@
+{
+  "name": "School Hub",
+  "short_name": "Hub",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f7f5",
+  "theme_color": "#3b5bdb"
+}

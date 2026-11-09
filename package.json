@@ -1,0 +1,18 @@
+{
+  "name": "school-hub",
+  "private": true,
+  "workspaces": ["packages/*", "apps/*"],
+  "scripts": {
+    "dev": "npm run dev -w @hub/web",
+    "build": "npm run build -w @hub/core && npm run build -w @hub/web",
+    "test": "npm run test -w @hub/core",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "db:generate": "npm run db:generate -w @hub/core",
+    "db:migrate": "npm run db:migrate -w @hub/core"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "^24"
+  },
+  "engines": { "node": ">=22" }
+}

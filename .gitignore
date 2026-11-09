@@ -1,0 +1,12 @@
+node_modules/
+.next/
+dist/
+out/
+.env
+.env.*
+!.env.example
+.vercel/
+*.tsbuildinfo
+.DS_Store
+coverage/
+apps/desktop/src-tauri/target/
