@@ -43,6 +43,30 @@ cp -r skills/report-to-workspace ~/.claude/skills/
 ```
 Every Claude Code session then has the `my-workspace` tools, and the skill tells it when to report. (The server label can't be plain `workspace`: Claude Code reserves that name.)
 
+## Triage agent
+Everything that arrives without structure goes to one agent, which decides what to do:
+- Discord DMs you send with **Send to Workspace**
+- watched Discord channels
+- `POST /api/captures`
+- the `capture` MCP tool
+
+It looks at your open items and courses, then returns up to 5 actions: `create_task`, `update_task`, `create_event`, `draft_reply`, `add_note` or `ignore`.
+
+- **High-confidence actions apply immediately.** Each appears under **Agent activity** on the Today page with **Undo**.
+- **Medium and low confidence actions wait under Needs review.** You can edit the title, date or reply before you apply them.
+- **Message text is treated as data, never as instructions.** Every ID and date the model returns is validated before anything touches the database.
+- **Model:** `claude-opus-5-5` at low effort, with server-side refusal fallback (`packages/core/src/triage-anthropic.ts`).
+
+### Discord setup
+1. **Create the app.** In the [Developer Portal](https://discord.com/developers/applications), create an application. Copy the Application ID and Public Key, then create a bot under **Bot** and copy its token.
+2. **Turn on Message Content Intent** (on the **Bot** page), so the bot can read the channels it watches.
+3. **Set the interactions URL.** Under **General Information**, set the Interactions Endpoint URL to `https://<your-app>/api/discord/interactions`. Discord sends a signed ping to check it, so set the Discord env vars on Vercel and deploy first.
+4. **Install it twice.** Under **Installation**, enable **User Install** and **Guild Install** (`bot` scope, Read Messages/View Channels + Read Message History). Install it on your own account, and add it to the class servers you want watched.
+5. **Register the command:** `node --env-file=.env.secrets scripts/discord-register.mjs`
+6. **Schedule the channel poller:** `node --env-file=.env.secrets scripts/schedule-collectors.mjs https://<your-app>`
+
+Bots can't read your personal DMs, and Discord bans accounts that automate a personal login. **Send to Workspace** is the supported route: right-click (long-press on mobile) any message → **Apps → Send to Workspace**.
+
 ## REST API
 All routes need `Authorization: Bearer <WORKSPACE_API_TOKEN>`. Agents can add `x-workspace-actor: <name>` to identify themselves.
 
@@ -54,3 +78,5 @@ All routes need `Authorization: Bearer <WORKSPACE_API_TOKEN>`. Agents can add `x
 | GET / PATCH | `/api/items/:id` | GET also returns subtasks and the activity log |
 | POST | `/api/items/:id/progress` | `{actor, message, progressPct?, nextStep?, status?}` |
 | POST | `/api/quick-add` | `{text}` |
+| POST / GET | `/api/captures` | `{text, source?, author?, context?, url?}`: triaged in the background |
+| POST | `/api/actions/:id` | `{op: "approve" \| "reject" \| "undo", edits?}` |

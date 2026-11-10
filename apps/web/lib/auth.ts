@@ -19,6 +19,12 @@ export async function sessionValue(): Promise<string> {
   return Buffer.from(sig).toString("hex");
 }
 
+/** Bearer check against an arbitrary secret (e.g. CRON_SECRET). */
+export function bearerOkFor(req: Request, secret: string): boolean {
+  const h = req.headers.get("authorization");
+  return !!h?.startsWith("Bearer ") && safeEqual(h.slice(7), secret);
+}
+
 export function bearerOk(token: string | undefined | null): boolean {
   return !!token && safeEqual(token, env.apiToken);
 }

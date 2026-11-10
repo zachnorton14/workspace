@@ -1,4 +1,4 @@
-import { NotFoundError } from "@workspace/core";
+import { ActionStateError, NotFoundError } from "@workspace/core";
 import { ZodError } from "zod";
 import { requestAuthorized } from "./auth";
 
@@ -14,6 +14,7 @@ export function api<C>(fn: Handler<C>) {
     } catch (e) {
       if (e instanceof ZodError) return Response.json({ error: "invalid_input", issues: e.issues }, { status: 400 });
       if (e instanceof NotFoundError) return Response.json({ error: "not_found", message: e.message }, { status: 404 });
+      if (e instanceof ActionStateError) return Response.json({ error: "conflict", message: e.message }, { status: 409 });
       console.error(e);
       return Response.json({ error: "internal" }, { status: 500 });
     }

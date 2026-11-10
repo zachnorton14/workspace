@@ -72,3 +72,14 @@ ul.items li:first-child { border-top: none; }
 .form-grid .two { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; }
 .status-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0 18px; }
 .status-row button[aria-pressed=true] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+ul.reviews { list-style: none; margin: 0; padding: 0; }
+li.review { padding: 12px; border-top: 1px solid var(--line); }
+li.review:first-child { border-top: none; }
+.review-form .two { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; }
+.quote { margin: 0 0 8px; padding: 6px 10px; border-left: 3px solid var(--line); color: var(--muted); white-space: pre-wrap; overflow-wrap: anywhere; }
+.quote a { text-decoration: underline; }
+a.button { display: inline-block; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 8px 12px; }
+.activity li { display: flex; gap: 10px; align-items: baseline; justify-content: space-between; }
+.activity button { padding: 3px 9px; font-size: 13px; flex: none; }
+.undone { text-decoration: line-through; color: var(--muted); }
+@media (max-width: 520px) { .review-form .two, .form-grid .two { grid-template-columns: 1fr; } }

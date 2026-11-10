@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { addNote, setStatus } from "@/app/actions";
 import { ItemRow } from "@/components/ItemRow";
+import { ReplyDraft } from "@/components/ReplyDraft";
 import { getDb } from "@/lib/db";
 import { env } from "@/lib/env";
 import { formatDue, kindLabel } from "@/lib/format";
@@ -38,6 +39,11 @@ export default async function ItemPage({ params }: { params: Promise<{ id: strin
           ? <a href={item.sourceUrl} target="_blank" rel="noreferrer" style={{ textDecoration: "underline" }}>Open in {item.source}</a>
           : <span>From {item.source}</span>)}
       </div>
+      {item.kind === "event" && item.scheduledAt && (
+        <p className="small">
+          {fmt.format(item.scheduledAt)}{item.endsAt ? ` – ${fmt.format(item.endsAt)}` : ""}{item.location ? ` · ${item.location}` : ""}
+        </p>
+      )}
       {item.nextStep && <p className="next"><b>Next step:</b> {item.nextStep}</p>}
       {item.notes && <p style={{ whiteSpace: "pre-wrap" }}>{item.notes}</p>}
 
@@ -48,6 +54,13 @@ export default async function ItemPage({ params }: { params: Promise<{ id: strin
           </form>
         ))}
       </div>
+
+      {(item.kind === "reply" || item.replyDraft) && (
+        <section className="bucket">
+          <h2>Reply draft</h2>
+          <ReplyDraft itemId={item.id} draft={item.replyDraft ?? ""} url={item.sourceUrl} />
+        </section>
+      )}
 
       {subtasks.length > 0 && (
         <section className="bucket">

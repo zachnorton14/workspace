@@ -71,6 +71,7 @@ function toColumns(input: ItemCreate | ItemUpdate, tz: string): Partial<NewItem>
   const { due, ...rest } = input;
   const cols: Partial<NewItem> = { ...rest } as Partial<NewItem>;
   if ("scheduledAt" in input && input.scheduledAt !== undefined) cols.scheduledAt = new Date(input.scheduledAt);
+  if ("endsAt" in input && input.endsAt !== undefined) cols.endsAt = new Date(input.endsAt);
   const d = parseDue(due, tz);
   if (d) Object.assign(cols, d);
   return cols;

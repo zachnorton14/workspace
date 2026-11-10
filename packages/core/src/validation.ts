@@ -13,6 +13,9 @@ export const itemCreateSchema = z.object({
   /** ISO datetime, or a bare YYYY-MM-DD date (stored as all-day). */
   due: isoDate.optional(),
   scheduledAt: z.iso.datetime({ offset: true }).optional(),
+  endsAt: z.iso.datetime({ offset: true }).optional(),
+  location: z.string().max(300).optional(),
+  replyDraft: z.string().max(10_000).optional(),
   estMinutes: z.number().int().min(1).max(10_000).optional(),
   priority: z.number().int().min(1).max(4).optional(),
   nextStep: z.string().max(1000).optional(),
@@ -31,6 +34,7 @@ export const itemUpdateSchema = itemCreateSchema
     due: isoDate.nullable().optional(),
     courseId: z.uuid().nullable().optional(),
     nextStep: z.string().max(1000).nullable().optional(),
+    replyDraft: z.string().max(10_000).nullable().optional(),
   });
 export type ItemUpdate = z.infer<typeof itemUpdateSchema>;
 

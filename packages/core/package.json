@@ -19,6 +19,7 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.7.0",
     "drizzle-orm": "^0.45.4",
     "zod": "^4.6.7"
   },

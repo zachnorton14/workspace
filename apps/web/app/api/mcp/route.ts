@@ -11,6 +11,8 @@ import {
   listCourses,
   listItems,
   NotFoundError,
+  ingestCapture,
+  listAgentActions,
   quickAddItem,
   reportProgress,
   todaySummary,
@@ -21,6 +23,9 @@ import { ZodError, z } from "zod";
 import { bearerOk } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { env } from "@/lib/env";
+import { runTriage } from "@/lib/triage";
+
+export const maxDuration = 60;
 
 /** Drop nulls/empties so agents spend fewer tokens reading results. */
 function compact(v: unknown): unknown {
@@ -154,6 +159,43 @@ const mcp = createMcpHandler(
         }),
       },
       (r) => run(() => reportProgress({ db: getDb(), tz: env.tz }, r)),
+    );
+
+    server.registerTool(
+      "capture",
+      {
+        title: "Capture for triage",
+        description:
+          "Hand raw text (a pasted message, an email, notes from a meeting) to Workspace's triage agent. It decides what to do: create tasks or events, update existing items, draft a reply, or ignore. Clear-cut actions apply immediately; uncertain ones wait for the user's review. Use this when you have unstructured information; use quick_add/create_item when you already know the exact task.",
+        inputSchema: z.object({
+          text: z.string().min(1).max(20000),
+          context: z.string().max(300).optional().describe('Where it came from, e.g. "email from Prof. Lee".'),
+          author: z.string().max(200).optional(),
+          actor: actorField,
+        }),
+      },
+      ({ text, context, author }) =>
+        run(async () => {
+          const { capture } = await ingestCapture(getDb(), { source: "agent", text, context, author });
+          const r = await runTriage(capture.id);
+          return { summary: r.summary, actions: r.actions.map((a) => ({ id: a.id, type: a.type, status: a.status, itemId: a.itemId, rationale: a.rationale })) };
+        }),
+    );
+
+    server.registerTool(
+      "agent_activity",
+      {
+        title: "Agent activity",
+        description: "Recent triage decisions: what was applied automatically, what is waiting for review (status proposed), and what was undone or rejected.",
+        inputSchema: z.object({ status: z.array(z.enum(["applied", "proposed", "undone", "rejected", "skipped"])).optional(), limit: z.number().int().min(1).max(100).optional() }),
+        annotations: { readOnlyHint: true },
+      },
+      ({ status, limit }) =>
+        run(async () => ({
+          actions: (await listAgentActions(getDb(), { status, limit })).map((r) => ({
+            ...r.action, itemTitle: r.itemTitle, from: r.capture.context, captureSummary: r.capture.summary,
+          })),
+        })),
     );
 
     server.registerTool(
