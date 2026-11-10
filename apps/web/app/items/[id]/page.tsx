@@ -1,4 +1,4 @@
-import { getItem, ITEM_STATUSES, listCourses, NotFoundError } from "@hub/core";
+import { getItem, ITEM_STATUSES, listCourses, NotFoundError } from "@workspace/core";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { addNote, setStatus } from "@/app/actions";

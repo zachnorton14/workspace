@@ -1,4 +1,4 @@
-import { listCourses, listItems, todaySummary, type Bucket, type Item } from "@hub/core";
+import { listCourses, listItems, todaySummary, type Bucket, type Item } from "@workspace/core";
 import { ItemRow, type RowItem } from "@/components/ItemRow";
 import { getDb } from "@/lib/db";
 import { env } from "@/lib/env";

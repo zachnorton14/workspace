@@ -1,4 +1,4 @@
-import { NotFoundError } from "@hub/core";
+import { NotFoundError } from "@workspace/core";
 import { ZodError } from "zod";
 import { requestAuthorized } from "./auth";
 

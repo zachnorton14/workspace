@@ -1,4 +1,4 @@
-import { todaySummary } from "@hub/core";
+import { todaySummary } from "@workspace/core";
 import { getDb } from "@/lib/db";
 import { env } from "@/lib/env";
 import { api } from "@/lib/http";

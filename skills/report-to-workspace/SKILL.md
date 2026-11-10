@@ -1,11 +1,11 @@
 ---
-name: report-to-hub
-description: Report homework, research and coding progress to the user's School Hub to-do system. Use at the start of any school, homework, research or project work session, at meaningful milestones, when blocked, and before ending the session. Also use when the user mentions a new deadline, assignment or thing to do, so it gets captured.
+name: report-to-workspace
+description: Report homework, research and coding progress to the user's Workspace to-do system. Use at the start of any school, homework, research or project work session, at meaningful milestones, when blocked, and before ending the session. Also use when the user mentions a new deadline, assignment or thing to do, so it gets captured.
 ---
 
-# Report to School Hub
+# Report to Workspace
 
-The user keeps every to-do (assignments, research projects, replies, chores) in one hub. You reach it through the `hub` MCP server. Your report is how the user sees what happened in this terminal from their phone or laptop, so keep it accurate and short.
+The user keeps every to-do (assignments, research projects, replies, chores) in Workspace. You reach it through the `workspace` MCP server. Your report is how the user sees what happened in this terminal from their phone or laptop, so keep it accurate and short.
 
 ## Pick a name for yourself
 Use one short, stable `actor` name for the whole session, based on the work, for example `chem241-hw`, `thesis-agent` or `ml-research`. Pass it on every write call.
@@ -36,4 +36,4 @@ When the user or the material mentions a new deadline or task ("the lab writeup 
 ## Rules
 - Never mark an item `done` unless the work is actually complete or the user says so.
 - Never edit or complete items unrelated to your current work.
-- If the hub tools are unavailable, tell the user once and continue. Do not retry in a loop.
+- If Workspace tools are unavailable, tell the user once and continue. Do not retry in a loop.

@@ -15,7 +15,7 @@ import {
   reportProgress,
   todaySummary,
   updateItem,
-} from "@hub/core";
+} from "@workspace/core";
 import { createMcpHandler, withMcpAuth } from "mcp-handler";
 import { ZodError, z } from "zod";
 import { bearerOk } from "@/lib/auth";
@@ -177,13 +177,13 @@ const mcp = createMcpHandler(
       (c) => run(async () => ({ course: await createCourse(getDb(), c) })),
     );
   },
-  { serverInfo: { name: "school-hub", version: "0.1.0" } },
+  { serverInfo: { name: "workspace", version: "0.1.0" } },
 );
 
-// Phase 1: static bearer token (HUB_API_TOKEN). Phase 2 adds OAuth for the claude.ai connector.
+// Phase 1: static bearer token (WORKSPACE_API_TOKEN). Phase 2 adds OAuth for the claude.ai connector.
 const handler = withMcpAuth(
   mcp,
-  (_req, token) => (bearerOk(token) ? { token: token!, clientId: "hub-token", scopes: ["hub"] } : undefined),
+  (_req, token) => (bearerOk(token) ? { token: token!, clientId: "workspace-token", scopes: ["workspace"] } : undefined),
   { required: true },
 );
 

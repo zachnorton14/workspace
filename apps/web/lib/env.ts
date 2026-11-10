@@ -6,6 +6,6 @@ function required(name: string): string {
 
 export const env = {
   get databaseUrl() { return required("DATABASE_URL"); },
-  get apiToken() { return required("HUB_API_TOKEN"); },
-  get tz() { return process.env.HUB_TIMEZONE || "America/New_York"; },
+  get apiToken() { return required("WORKSPACE_API_TOKEN"); },
+  get tz() { return process.env.WORKSPACE_TIMEZONE || "America/New_York"; },
 };

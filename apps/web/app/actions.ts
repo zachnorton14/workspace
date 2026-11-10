@@ -1,5 +1,5 @@
 "use server";
-import { completeItem, quickAddItem, reportProgress, updateItem } from "@hub/core";
+import { completeItem, quickAddItem, reportProgress, updateItem } from "@workspace/core";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";

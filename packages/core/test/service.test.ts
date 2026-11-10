@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   completeItem, createCourse, quickAddItem, createItem, getItem, listItems, NotFoundError,
-  reportProgress, todaySummary, updateItem, upsertFromSource, type Ctx, type HubDb,
+  reportProgress, todaySummary, updateItem, upsertFromSource, type Ctx, type WorkspaceDb,
 } from "../src/service.js";
 import { testDb } from "./db.js";
 
 const TZ = "America/New_York";
 const now = new Date("2026-11-09T15:00:00Z");
-let db: HubDb;
+let db: WorkspaceDb;
 let ctx: Ctx;
 
 beforeEach(async () => {
@@ -72,7 +72,7 @@ describe("reportProgress", () => {
 });
 
 describe("upsertFromSource", () => {
-  it("inserts once, then refreshes source fields without clobbering hub state", async () => {
+  it("inserts once, then refreshes source fields without clobbering workspace state", async () => {
     const a = await upsertFromSource(ctx, { title: "HW 3", source: "moodle", sourceRef: "assign:42", due: "2026-11-12" });
     expect(a.created).toBe(true);
     await updateItem(ctx, a.item.id, { status: "doing", progressPct: 40 });

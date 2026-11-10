@@ -1,4 +1,4 @@
-import { bucketFor, type Item } from "@hub/core";
+import { bucketFor, type Item } from "@workspace/core";
 
 const KIND_LABEL: Record<string, string> = {
   task: "", reply: "Reply", assignment: "Assignment", exam: "Exam", project: "Project",

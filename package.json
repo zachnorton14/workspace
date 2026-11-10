@@ -1,14 +1,14 @@
 {
-  "name": "school-hub",
+  "name": "workspace",
   "private": true,
   "workspaces": ["packages/*", "apps/*"],
   "scripts": {
-    "dev": "npm run dev -w @hub/web",
-    "build": "npm run build -w @hub/core && npm run build -w @hub/web",
-    "test": "npm run test -w @hub/core",
+    "dev": "npm run dev -w @workspace/web",
+    "build": "npm run build -w @workspace/core && npm run build -w @workspace/web",
+    "test": "npm run test -w @workspace/core",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "db:generate": "npm run db:generate -w @hub/core",
-    "db:migrate": "npm run db:migrate -w @hub/core"
+    "db:generate": "npm run db:generate -w @workspace/core",
+    "db:migrate": "npm run db:migrate -w @workspace/core"
   },
   "devDependencies": {
     "typescript": "5.9.3",

@@ -1,4 +1,4 @@
-import { reportProgress } from "@hub/core";
+import { reportProgress } from "@workspace/core";
 import { getDb } from "@/lib/db";
 import { env } from "@/lib/env";
 import { api, body } from "@/lib/http";

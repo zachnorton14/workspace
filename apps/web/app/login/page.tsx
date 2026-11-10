@@ -7,8 +7,8 @@ export default function Login() {
   return (
     <main>
       <form action={action} className="card login">
-        <h1 style={{ margin: 0, fontSize: 20 }}>School Hub</h1>
-        <input type="password" name="token" placeholder="Hub token" autoFocus required autoComplete="current-password" />
+        <h1 style={{ margin: 0, fontSize: 20 }}>Workspace</h1>
+        <input type="password" name="token" placeholder="Workspace token" autoFocus required autoComplete="current-password" />
         {state?.error && <p className="error">{state.error}</p>}
         <button className="primary" disabled={pending}>{pending ? "Checking…" : "Sign in"}</button>
       </form>

@@ -16,10 +16,10 @@ import {
   type ProgressReport,
 } from "./validation.js";
 
-export type HubDb = PgDatabase<PgQueryResultHKT, typeof schema>;
+export type WorkspaceDb = PgDatabase<PgQueryResultHKT, typeof schema>;
 
 export interface Ctx {
-  db: HubDb;
+  db: WorkspaceDb;
   /** IANA timezone used for date-only dues and "today". */
   tz: string;
   /** Who is acting: "user", an agent name, or a collector name. */
@@ -35,7 +35,7 @@ export class NotFoundError extends Error {
 
 const OPEN_STATUSES = ["inbox", "todo", "doing", "blocked"] as const;
 
-export async function listItems(db: HubDb, rawFilter: ItemFilter = {}): Promise<Item[]> {
+export async function listItems(db: WorkspaceDb, rawFilter: ItemFilter = {}): Promise<Item[]> {
   const f = itemFilterSchema.parse(rawFilter);
   const where: SQL[] = [];
   if (f.status?.length) where.push(inArray(items.status, f.status));
@@ -57,7 +57,7 @@ export async function listItems(db: HubDb, rawFilter: ItemFilter = {}): Promise<
     .limit(f.limit ?? 200);
 }
 
-export async function getItem(db: HubDb, id: string) {
+export async function getItem(db: WorkspaceDb, id: string) {
   const [item] = await db.select().from(items).where(eq(items.id, id));
   if (!item) throw new NotFoundError(`Item ${id}`);
   const [subtasks, log] = await Promise.all([
@@ -145,7 +145,7 @@ export async function reportProgress(ctx: Omit<Ctx, "actor">, raw: ProgressRepor
 
 /**
  * Collector entry point: insert or refresh an item keyed by (source, sourceRef).
- * Source-owned fields (title, notes, due, url) are refreshed; the hub's own state
+ * Source-owned fields (title, notes, due, url) are refreshed; Workspace's own state
  * (status, progress, next step, priority) is never overwritten by a re-sync.
  */
 export async function upsertFromSource(
@@ -170,7 +170,7 @@ export async function upsertFromSource(
   return { item, created };
 }
 
-export async function todaySummary(db: HubDb, tz: string, now = new Date()) {
+export async function todaySummary(db: WorkspaceDb, tz: string, now = new Date()) {
   const open = await db
     .select()
     .from(items)
@@ -190,11 +190,11 @@ export async function todaySummary(db: HubDb, tz: string, now = new Date()) {
   };
 }
 
-export async function listCourses(db: HubDb) {
+export async function listCourses(db: WorkspaceDb) {
   return db.select().from(courses).where(eq(courses.archived, false)).orderBy(asc(courses.name));
 }
 
-export async function createCourse(db: HubDb, input: { name: string; code?: string; color?: string }) {
+export async function createCourse(db: WorkspaceDb, input: { name: string; code?: string; color?: string }) {
   const [c] = await db.insert(courses).values(input).returning();
   return c!;
 }

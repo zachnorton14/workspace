@@ -1,4 +1,4 @@
-import { createItem, itemFilterSchema, listItems } from "@hub/core";
+import { createItem, itemFilterSchema, listItems } from "@workspace/core";
 import { getDb } from "@/lib/db";
 import { env } from "@/lib/env";
 import { api, body } from "@/lib/http";
@@ -20,6 +20,6 @@ export const GET = api(async (req) => {
 });
 
 export const POST = api(async (req) => {
-  const actor = req.headers.get("x-hub-actor") ?? "user";
+  const actor = req.headers.get("x-workspace-actor") ?? "user";
   return Response.json({ item: await createItem({ db: getDb(), tz: env.tz, actor }, (await body(req)) as never) }, { status: 201 });
 });
