@@ -31,7 +31,7 @@ npm test                                    # core tests (in-memory Postgres, no
 ```
 
 ## Deploy (Supabase + Vercel)
-1. **Supabase:** create a project. Copy two connection strings from Project Settings → Database: the *transaction pooler* (port 6543) for `DATABASE_URL`, and the *direct* one (port 5432) for `DATABASE_URL_DIRECT`.
+1. **Supabase:** create a project. Use the *session pooler* connection string (port 5432) for both `DATABASE_URL` and `DATABASE_URL_DIRECT`. Don't use the transaction pooler (port 6543): with postgres.js, queries that wait for a busy connection there never finish.
 2. **Migrate:** `DATABASE_URL_DIRECT=... npm run db:migrate`. All tables have row-level security on with no policies, so Supabase's public API exposes nothing.
 3. **Vercel:** import the repo and set Root Directory to `apps/web`. Set the env vars `DATABASE_URL`, `WORKSPACE_API_TOKEN` (`openssl rand -hex 32`) and `WORKSPACE_TIMEZONE`.
 
