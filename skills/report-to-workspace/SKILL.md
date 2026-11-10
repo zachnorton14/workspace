@@ -5,7 +5,7 @@ description: Report homework, research and coding progress to the user's Workspa
 
 # Report to Workspace
 
-The user keeps every to-do (assignments, research projects, replies, chores) in Workspace. You reach it through the `workspace` MCP server. Your report is how the user sees what happened in this terminal from their phone or laptop, so keep it accurate and short.
+The user keeps every to-do (assignments, research projects, replies, chores) in Workspace. You reach it through the `my-workspace` MCP server. Your report is how the user sees what happened in this terminal from their phone or laptop, so keep it accurate and short.
 
 ## Pick a name for yourself
 Use one short, stable `actor` name for the whole session, based on the work, for example `chem241-hw`, `thesis-agent` or `ml-research`. Pass it on every write call.

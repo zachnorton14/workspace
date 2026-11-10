@@ -37,11 +37,11 @@ npm test                                    # core tests (in-memory Postgres, no
 
 ## Connect Claude Code agents
 ```sh
-claude mcp add --scope user --transport http workspace https://<your-app>.vercel.app/api/mcp \
+claude mcp add --scope user --transport http my-workspace https://<your-app>.vercel.app/api/mcp \
   --header "Authorization: Bearer $WORKSPACE_API_TOKEN"
 cp -r skills/report-to-workspace ~/.claude/skills/
 ```
-Every Claude Code session then has the `workspace` tools, and the skill tells it when to report.
+Every Claude Code session then has the `my-workspace` tools, and the skill tells it when to report. (The server label can't be plain `workspace`: Claude Code reserves that name.)
 
 ## REST API
 All routes need `Authorization: Bearer <WORKSPACE_API_TOKEN>`. Agents can add `x-workspace-actor: <name>` to identify themselves.
