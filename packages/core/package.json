@@ -6,7 +6,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" }
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -21,8 +24,10 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.16",
+    "@types/node": "^24.19.2",
     "drizzle-kit": "^0.31.11",
     "postgres": "^4.1.0",
+    "typescript": "^5.9.3",
     "vitest": "^5.1.0"
   }
 }

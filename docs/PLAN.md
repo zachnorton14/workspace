@@ -46,7 +46,7 @@ Streamable HTTP via `@modelcontextprotocol/sdk` (or Vercel `mcp-handler`). Tools
 2. **Google Calendar**: Calendar API incremental sync (`syncToken`) → `event` items; optional write-back of `scheduled_at` blocks.
 3. **Gmail**: `history.list` since last historyId → Claude API (Haiku tier) pulls out action items ("needs reply", deadlines) → `inbox`. Load the `claude-api` skill before writing this.
 4. **Moodle**: first test the school's site for a web service token (`/login/token.php?service=moodle_mobile_app`) → `mod_assign_get_assignments` + submission status; otherwise fall back to the calendar export iCal URL.
-5. **Discord**: own bot application (Message Content intent), added to the class servers; collector polls `GET /channels/{id}/messages` with a stored last-message id (no always-on gateway needed on Vercel); mentions plus Claude extraction → `inbox`.
+5. **Discord** (top priority, built right after deploy): own bot application (Message Content intent), added to class servers; watches **only channels the user picks**. Collector polls `GET /channels/{id}/messages` per watched channel with a stored last-message id (no always-on gateway needed on Vercel). Claude reads new messages with surrounding context and proposes **suggestions** → Inbox. Each suggestion is an **editable draft** (title, due, course, kind pre-filled; fix with a tap, then accept/dismiss) linked to the source message. When someone asks the user something, Claude also writes a **draft reply**: edit → copy → jump-link to the message in Discord to send. Limit: a bot cannot read the user's personal DMs/group DMs or servers it isn't in.
 
 Google OAuth: own GCP project. Set the app to "In production" (unverified, personal use) so refresh tokens don't expire after 7 days.
 
@@ -60,7 +60,7 @@ Google OAuth: own GCP project. Set the app to "In production" (unverified, perso
 1. Monorepo scaffold, Supabase project + schema + RLS, core package, MCP server, minimal web UI. Deploy to Vercel.
 2. Add the custom connector in claude.ai, publish the phone artifact, install the `report-to-hub` skill + `claude mcp add` globally.
 3. Todoist one-time import, Google Calendar.
-4. Gmail + Claude extraction, Moodle (probe the school's URL), Discord bot.
+4. Discord bot + suggestions + reply drafts (moved up: do this right after Phase 2), then Gmail + Claude extraction, Moodle (probe the school's URL).
 5. Tauri desktop app.
 
 ## Needed from you during build

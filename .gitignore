@@ -4,9 +4,12 @@ dist/
 out/
 .env
 .env.*
-!.env.example
 .vercel/
 *.tsbuildinfo
 .DS_Store
 coverage/
 apps/desktop/src-tauri/target/
+.vercel
+.env*
+!.env.example
+supabase/.temp/
